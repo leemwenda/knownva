@@ -18,7 +18,7 @@ export function Register() {
     try {
       await api('/auth/register', { method: 'POST', body: JSON.stringify({ name, email, password }) });
       await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
-      await refresh(); navigate('/');
+      await refresh(); navigate('/dashboard');
     } catch (err) { setError(err instanceof Error ? err.message : 'Registration failed'); } 
     finally { setBusy(false); }
   };

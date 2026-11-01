@@ -18,7 +18,7 @@ export function Upload() {
 
   useEffect(() => { api<{ ok: true } & AcademicData>('/academic/structure').then(res => setAcademic(res)).catch(() => {}); }, []);
 
-  if (user?.role !== 'lecturer' && user?.role !== 'superadmin') return <p className="text-red-400">Only lecturers can upload.</p>;
+  if (user?.role !== 'lecturer' && user?.role !== 'superadmin') return <p className="text-red-500 font-semibold p-10">Only lecturers can upload resources.</p>;
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault(); if (!file) { setError('Select a file'); return; }
@@ -33,35 +33,47 @@ export function Upload() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl animate-fade-in-up">
-      <form onSubmit={onSubmit} className="glass rounded-2xl p-8 space-y-5">
-        <h1 className="text-2xl font-bold text-white mb-6">Upload Resource</h1>
-        {error && <div className="rounded-lg bg-red-500/10 p-3 text-sm text-red-400 border border-red-500/20">{error}</div>}
+    <div className="max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-slate-900 mb-1">Upload Resource</h1>
+        <p className="text-slate-500">Share your academic materials with the community. All uploads are reviewed before publishing.</p>
+      </div>
+
+      <form onSubmit={onSubmit} className="card p-8 space-y-6">
+        {error && <div className="rounded-xl bg-red-50 p-4 text-sm font-medium text-red-600 border border-red-100">{error}</div>}
         
-        <div><label className="block text-xs font-bold text-slate-400 uppercase mb-2">Title</label><input required value={title} onChange={e => setTitle(e.target.value)} className="input-field" placeholder="e.g. Intro to Computer Science" /></div>
-        <div><label className="block text-xs font-bold text-slate-400 uppercase mb-2">Description</label><textarea required value={description} onChange={e => setDescription(e.target.value)} className="input-field" rows={3} placeholder="Briefly describe the content..." /></div>
+        <div><label className="block text-sm font-bold text-slate-700 mb-2">Title</label><input required value={title} onChange={e => setTitle(e.target.value)} className="input-field" placeholder="e.g. Introduction to Computer Science" /></div>
+        <div><label className="block text-sm font-bold text-slate-700 mb-2">Description</label><textarea required value={description} onChange={e => setDescription(e.target.value)} className="input-field" rows={3} placeholder="Briefly describe what this resource covers..." /></div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div><label className="block text-xs font-bold text-slate-400 uppercase mb-2">Type</label>
-            <select value={resourceType} onChange={e => setResourceType(e.target.value)} className="input-field bg-slate-900">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div><label className="block text-sm font-bold text-slate-700 mb-2">Type</label>
+            <select value={resourceType} onChange={e => setResourceType(e.target.value)} className="input-field bg-white">
               <option value="Notes">Notes</option><option value="Past Paper">Past Paper</option><option value="Study Guide">Study Guide</option>
             </select>
           </div>
-          <div><label className="block text-xs font-bold text-slate-400 uppercase mb-2">Institution</label>
-            <select value={institutionId} onChange={e => setInstitutionId(e.target.value)} className="input-field bg-slate-900">
+          <div><label className="block text-sm font-bold text-slate-700 mb-2">Institution</label>
+            <select value={institutionId} onChange={e => setInstitutionId(e.target.value)} className="input-field bg-white">
               <option value="">Optional</option>{academic.institutions.map(i => <option key={i.id} value={i.id}>{i.name}</option>)}
+            </select>
+          </div>
+          <div><label className="block text-sm font-bold text-slate-700 mb-2">Level</label>
+            <select value={levelId} onChange={e => setLevelId(e.target.value)} className="input-field bg-white">
+              <option value="">Optional</option>{academic.levels.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
             </select>
           </div>
         </div>
 
-        <label className="flex items-center gap-3 text-sm text-slate-300 p-3 rounded-lg border border-slate-700 bg-slate-800/50 cursor-pointer">
-          <input type="checkbox" checked={isPremium} onChange={e => setIsPremium(e.target.checked)} className="h-4 w-4 rounded border-slate-600 bg-slate-700 text-indigo-500 focus:ring-indigo-500" /> Mark as Premium Content
+        <label className="flex items-center gap-3 text-sm font-medium text-slate-700 p-4 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
+          <input type="checkbox" checked={isPremium} onChange={e => setIsPremium(e.target.checked)} className="h-5 w-5 rounded border-slate-300 text-brand-500 focus:ring-brand-500" /> Mark as Premium Content
         </label>
 
-        <div><label className="block text-xs font-bold text-slate-400 uppercase mb-2">File (PDF/DOC)</label><input required type="file" onChange={e => setFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20 file:cursor-pointer" /></div>
+        <div>
+          <label className="block text-sm font-bold text-slate-700 mb-2">File (PDF / DOC)</label>
+          <input required type="file" onChange={e => setFile(e.target.files?.[0] || null)} className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100 file:cursor-pointer transition-all" />
+        </div>
         
-        <button disabled={busy} className="w-full rounded-xl bg-indigo-600 py-3.5 text-sm font-bold text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/20 disabled:opacity-50 transition-all">
-          {busy ? 'Uploading…' : 'Publish Resource'}
+        <button disabled={busy} className="btn-primary w-full py-4 text-base flex justify-center items-center gap-2">
+          <UploadCloud className="h-5 w-5" /> {busy ? 'Uploading…' : 'Submit for Review'}
         </button>
       </form>
     </div>

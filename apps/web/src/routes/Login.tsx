@@ -16,7 +16,7 @@ export function Login() {
     e.preventDefault(); setBusy(true); setError(null);
     try {
       await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) });
-      await refresh(); navigate('/');
+      await refresh(); navigate('/dashboard');
     } catch (err) { setError(err instanceof Error ? err.message : 'Login failed'); } 
     finally { setBusy(false); }
   };

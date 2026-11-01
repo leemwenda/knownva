@@ -1,51 +1,65 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, BookOpen, Download, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Sparkles, BookOpen, Shield, GraduationCap } from 'lucide-react';
 
 export function Home() {
   return (
-    <div className="flex flex-col items-center pt-10 pb-20 text-center">
-      
-      <div className="animate-fade-in-up inline-flex items-center rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-sm font-medium text-indigo-300 mb-10 backdrop-blur-md">
-        <Sparkles className="mr-2 h-4 w-4" />
-        The new standard for academic resources
-      </div>
-      
-      <h1 className="animate-fade-in-up max-w-4xl text-5xl font-extrabold tracking-tight text-white sm:text-7xl mb-8 leading-[1.1]">
-        Master your courses with <br className="hidden sm:block" />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
-          curated study notes.
-        </span>
-      </h1>
-      
-      <p className="animate-fade-in-up max-w-2xl text-lg text-slate-400 mb-12">
-        Access high-quality lecture notes, past papers, and study guides. Written by top students, approved by lecturers.
-      </p>
-
-      <div className="animate-fade-in-up flex flex-col sm:flex-row gap-4 mb-24">
-        <Link to="/notes" className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 text-base font-semibold text-white shadow-[0_0_30px_rgba(99,102,241,0.4)] hover:shadow-[0_0_40px_rgba(99,102,241,0.6)] hover:-translate-y-0.5 transition-all">
-          Explore Resources 
-          <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-        </Link>
-        <Link to="/register" className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md hover:bg-white/10 transition-colors">
-          Create Free Account
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl text-left">
-        {[
-          { icon: BookOpen, title: "Curated Library", desc: "Thousands of verified PDFs mapped directly to your institution's curriculum.", color: "text-indigo-400", bg: "bg-indigo-400/10" },
-          { icon: Download, title: "Offline Access", desc: "Download notes instantly and study anywhere, anytime without internet.", color: "text-purple-400", bg: "bg-purple-400/10" },
-          { icon: ShieldCheck, title: "Moderated Quality", desc: "Every upload is reviewed by our team of experts to ensure absolute accuracy.", color: "text-cyan-400", bg: "bg-cyan-400/10" }
-        ].map((f, i) => (
-          <div key={i} className="glass rounded-3xl p-8 hover:bg-slate-800/50 transition-colors duration-300 group">
-            <div className={`mb-6 inline-flex h-12 w-12 items-center justify-center rounded-2xl ${f.bg} ${f.color} group-hover:scale-110 transition-transform`}>
-              <f.icon className="h-6 w-6" />
-            </div>
-            <h3 className="mb-3 text-xl font-bold text-white">{f.title}</h3>
-            <p className="text-slate-400 leading-relaxed text-sm">{f.desc}</p>
+    <div className="flex flex-col">
+      <section className="mx-auto max-w-6xl px-4 py-20 md:py-32 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-sm font-medium text-brand-600 mb-6">
+            <Sparkles className="h-4 w-4" /> Your Intelligent Academic Workspace
           </div>
-        ))}
-      </div>
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1] mb-6">
+            Everything you need to <span className="text-brand-500">learn smarter.</span>
+          </h1>
+          <p className="text-lg text-slate-600 mb-8 max-w-lg">
+            Access academic resources, organize your notes, and use intelligent AI tools to understand your coursework and prepare for examinations.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link to="/register" className="btn-primary flex items-center justify-center gap-2 text-base py-3 px-6">
+              Get Started Free <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/login" className="flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-base font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+              Explore Resources
+            </Link>
+          </div>
+          
+          <div className="mt-12 flex items-center gap-6 text-sm text-slate-500 font-medium">
+            <div className="flex items-center gap-2"><Shield className="h-5 w-5 text-brand-500" /> Secure & Reliable</div>
+            <div className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-brand-500" /> Built for Education</div>
+          </div>
+        </div>
+
+        {/* Abstract Product Preview */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-tr from-brand-100 to-cyan-50 rounded-3xl transform rotate-3 scale-105 -z-10"></div>
+          <div className="card p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+              <div className="h-3 w-3 rounded-full bg-red-400"></div>
+              <div className="h-3 w-3 rounded-full bg-amber-400"></div>
+              <div className="h-3 w-3 rounded-full bg-green-400"></div>
+              <div className="ml-4 h-6 w-48 bg-slate-100 rounded-md"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="h-8 w-1/2 bg-slate-200 rounded-md"></div>
+              <div className="h-4 w-full bg-slate-100 rounded-md"></div>
+              <div className="h-4 w-5/6 bg-slate-100 rounded-md"></div>
+              <div className="grid grid-cols-2 gap-4 mt-8">
+                <div className="card p-4 bg-brand-50 border-brand-100">
+                  <BookOpen className="h-6 w-6 text-brand-500 mb-2" />
+                  <div className="h-4 w-20 bg-brand-200 rounded mb-2"></div>
+                  <div className="h-3 w-12 bg-brand-200 rounded"></div>
+                </div>
+                <div className="card p-4">
+                  <Sparkles className="h-6 w-6 text-brand-500 mb-2" />
+                  <div className="h-4 w-20 bg-slate-200 rounded mb-2"></div>
+                  <div className="h-3 w-12 bg-slate-100 rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
