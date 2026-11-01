@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-navy-950: #050b14;
+  --color-navy-900: #0a1220;
+  --color-navy-800: #0f1b2d;
+  --color-navy-700: #152539;
+  --color-navy-600: #1c3149;
+  --color-navy-500: #284764;
+
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --background: #f6f8fb;
+  --foreground: #0a1220;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
+  --border-subtle: rgba(15, 27, 45, 0.1);
+}
+
+.dark {
+  --background: #050b14;
+  --foreground: #e7eefc;
+  --surface: #0f1b2d;
+  --surface-muted: #0a1526;
+  --border-subtle: rgba(226, 232, 240, 0.08);
+}
+
+html,
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+* {
+  border-color: var(--border-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.kv-shell-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.kv-shell-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(45, 212, 191, 0.35);
+  border-radius: 9999px;
+}
+.kv-shell-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kv-glass {
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.08), rgba(139, 92, 246, 0.06));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.kv-focus {
+  outline: none;
+}
+.kv-focus:focus-visible {
+  outline: 2px solid var(--color-teal-400);
+  outline-offset: 2px;
+}
