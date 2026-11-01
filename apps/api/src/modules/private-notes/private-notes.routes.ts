@@ -40,7 +40,7 @@ privateNotesRouter.post("/", authenticate, async (req: Request, res: Response, n
     if (!req.user) throw HttpError.unauthorized();
     const data = createSchema.parse(req.body);
     const note = await prisma.privateNote.create({
-      data: { ...clean(data), userId: req.user.id } as never,
+      data: { content: data.content, title: data.title ?? "", userId: req.user.id },
     });
     res.status(201).json({ ok: true, note });
   } catch (err) { next(err); }
