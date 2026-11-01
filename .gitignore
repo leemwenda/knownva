@@ -22,3 +22,9 @@ storage/
 *.log
 npm-debug.log*
 coverage/
+apps/*/node_modules/
+packages/*/node_modules/
+apps/api/storage/
+apps/api/.env
+apps/*/dist/
+packages/*/dist/
