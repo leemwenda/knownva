@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "description": "KnowVa Academic Resource Platform — production monorepo",
   "workspaces": ["apps/*", "packages/*"],
-  "engines": { "node": ">=20.11.0 <21" },
+  "engines": { "node": ">=20.11.0 <25" },
   "scripts": {
     "dev:api": "npm run dev -w @knownva/api",
     "dev:web": "npm run dev -w @knownva/web",
