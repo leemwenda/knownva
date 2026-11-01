@@ -212,7 +212,7 @@ export const notesService = {
         const diff = rating - existing.rating;
         await tx.review.update({
           where: { id: existing.id },
-          data: { rating, comment },
+          data: { rating, comment: comment ?? "" },
         });
         if (diff !== 0) {
           await tx.note.update({
@@ -221,7 +221,7 @@ export const notesService = {
           });
         }
       } else {
-        await tx.review.create({ data: { noteId: id, userId: user.id, rating, comment } });
+        await tx.review.create({ data: { noteId: id, userId: user.id, rating, comment: comment ?? "" } });
         await tx.note.update({
           where: { id },
           data: {

@@ -9,8 +9,8 @@ import { sendVerificationEmail, sendPasswordResetEmail } from "./auth.mailer.js"
 import type { RegisterInput, LoginInput } from "@knownva/shared";
 
 export interface AuthContext {
-  ip?: string;
-  userAgent?: string;
+  ip?: string | undefined;
+  userAgent?: string | undefined;
 }
 
 const ACCESS_TTL_MS = 15 * 60 * 1000;
@@ -47,8 +47,8 @@ export const authService = {
       name: input.name,
       email: input.email,
       passwordHash,
-      institution: input.institution,
-      fieldOfStudy: input.fieldOfStudy,
+      ...(input.institution !== undefined && { institution: input.institution }),
+      ...(input.fieldOfStudy !== undefined && { fieldOfStudy: input.fieldOfStudy }),
       role: "student",
       status: "active",
       emailVerified: false,

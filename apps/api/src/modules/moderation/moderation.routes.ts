@@ -21,7 +21,9 @@ async function decide(req: Request, res: Response, next: NextFunction) {
     if (!parsed.success) throw HttpError.badRequest("Invalid note id");
     const noteId = parsed.data;
 
-    const { decision, reason } = decisionSchema.parse(req.body);
+    const decisionBody = decisionSchema.parse(req.body);
+    const decision = decisionBody.decision;
+    const reason = "reason" in decisionBody ? decisionBody.reason : undefined;
 
     const note = await prisma.note.findUnique({ where: { id: noteId } });
     if (!note) throw HttpError.notFound("Note not found");

@@ -9,7 +9,7 @@ export interface AccessPayload {
 
 export function signAccessToken(payload: AccessPayload): string {
   const options: SignOptions = {
-    expiresIn: env.JWT_ACCESS_TTL as unknown as SignOptions["expiresIn"],
+    expiresIn: env.JWT_ACCESS_TTL as NonNullable<SignOptions["expiresIn"]>,
     issuer: "knownva",
     audience: "knownva-web",
   };
@@ -29,7 +29,7 @@ export function verifyAccessToken(token: string): AccessPayload {
     throw new Error("Invalid token payload");
   }
   return {
-    sub: (decoded as { sub: number }).sub,
+    sub: (decoded as unknown as { sub: number }).sub,
     role: (decoded as { role: Role }).role,
   };
 }

@@ -1,5 +1,11 @@
 import { prisma } from "../../config/prisma.js";
 
+function clean<T extends Record<string, unknown>>(o: T): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const k of Object.keys(o)) if (o[k] !== undefined) out[k] = o[k];
+  return out;
+}
+
 export const academicRepo = {
   // READ (public)
   async getAllActive() {
@@ -33,7 +39,7 @@ export const academicRepo = {
   createLevel(name: string) {
     return prisma.level.create({ data: { name, active: true } });
   },
-  createUnit(data: { name: string; fieldId?: number; levelId?: number }) {
+  createUnit(data: { name: string; fieldId?: number | undefined; levelId?: number | undefined }) {
     return prisma.unit.create({
       data: {
         name: data.name,
@@ -45,17 +51,17 @@ export const academicRepo = {
   },
 
   // UPDATE
-  updateInstitution(id: number, data: { name?: string; active?: boolean }) {
-    return prisma.institution.update({ where: { id }, data });
+  updateInstitution(id: number, data: { name?: string | undefined; active?: boolean | undefined }) {
+    return prisma.institution.update({ where: { id }, data: clean(data) });
   },
-  updateField(id: number, data: { name?: string; active?: boolean }) {
-    return prisma.field.update({ where: { id }, data });
+  updateField(id: number, data: { name?: string | undefined; active?: boolean | undefined }) {
+    return prisma.field.update({ where: { id }, data: clean(data) });
   },
-  updateLevel(id: number, data: { name?: string; active?: boolean }) {
-    return prisma.level.update({ where: { id }, data });
+  updateLevel(id: number, data: { name?: string | undefined; active?: boolean | undefined }) {
+    return prisma.level.update({ where: { id }, data: clean(data) });
   },
-  updateUnit(id: number, data: { name?: string; fieldId?: number | null; levelId?: number | null; active?: boolean }) {
-    return prisma.unit.update({ where: { id }, data });
+  updateUnit(id: number, data: { name?: string | undefined; fieldId?: number | null | undefined; levelId?: number | null | undefined; active?: boolean | undefined }) {
+    return prisma.unit.update({ where: { id }, data: clean(data) });
   },
 
   // DELETE

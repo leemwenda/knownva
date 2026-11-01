@@ -1,11 +1,12 @@
-import pino from "pino";
+import pinoFn, { type Logger, type LoggerOptions } from "pino";
+const pino = pinoFn as unknown as (opts?: LoggerOptions) => Logger;
 import { env, isProd } from "../config/env.js";
 
 export const logger = pino({
   level: env.LOG_LEVEL,
-  transport: isProd
-    ? undefined
-    : { target: "pino-pretty", options: { colorize: true, translateTime: "SYS:HH:MM:ss" } },
+  ...(isProd
+    ? {}
+    : { transport: { target: "pino-pretty", options: { colorize: true, translateTime: "SYS:HH:MM:ss" } } }),
   redact: {
     paths: [
       "req.headers.cookie",

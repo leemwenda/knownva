@@ -15,7 +15,7 @@ export const ALLOWED_MIME_TYPES = new Set([
   "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 ]);
 
-const MAX_UPLOAD_MB = Number(env.STORAGE_MAX_UPLOAD_MB) || 30;
+const MAX_UPLOAD_MB = Number(process.env.STORAGE_MAX_UPLOAD_MB) || 30;
 export const MAX_FILE_SIZE_BYTES = MAX_UPLOAD_MB * 1024 * 1024;
 
 export async function saveNoteFile(input: {

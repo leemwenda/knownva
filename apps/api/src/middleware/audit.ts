@@ -18,7 +18,7 @@ export async function logAudit(input: AuditInput): Promise<void> {
         action: input.action,
         targetType: input.targetType ?? null,
         targetId: input.targetId ?? null,
-        details: (input.details ?? undefined) as Prisma.InputJsonValue | undefined,
+        ...(input.details !== undefined && { details: input.details as Prisma.InputJsonValue }),
       },
     });
   } catch (err) {
