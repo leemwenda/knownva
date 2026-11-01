@@ -7,6 +7,9 @@ import { Register } from './routes/Register';
 import { Notes } from './routes/Notes';
 import { NoteDetail } from './routes/NoteDetail';
 import { Profile } from './routes/Profile';
+import { Upload } from './routes/Upload';
+import { AdminDashboard } from './routes/AdminDashboard';
+import { AdminModeration } from './routes/AdminModeration';
 import { useAuth } from './lib/auth';
 
 function Protected({ children }: { children: ReactNode }) {
@@ -26,6 +29,9 @@ export function App() {
         <Route path="notes" element={<Notes />} />
         <Route path="notes/:id" element={<NoteDetail />} />
         <Route path="profile" element={<Protected><Profile /></Protected>} />
+        <Route path="upload" element={<Protected><Upload /></Protected>} />
+        <Route path="admin" element={<Protected><AdminDashboard /></Protected>} />
+        <Route path="admin/moderation" element={<Protected><AdminModeration /></Protected>} />
       </Route>
     </Routes>
   );
