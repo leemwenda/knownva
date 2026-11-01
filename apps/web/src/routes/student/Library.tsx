@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../lib/api';
+import { api } from '../../lib/api';
 import { Bookmark, Clock, FileText, Trash2, Plus } from 'lucide-react';
 
 interface Note { id: number; title: string; resourceType: string; uploader: { name: string }; }

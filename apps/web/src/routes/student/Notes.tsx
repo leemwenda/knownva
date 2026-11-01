@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../lib/api';
+import { api } from '../../lib/api';
 import { FileText, Star, Download, GraduationCap, Search, Filter } from 'lucide-react';
 
 interface Note { id: number; title: string; description: string; resourceType: string; isPremium: boolean; averageRating: number; downloadsCount: number; uploader: { id: number; name: string }; }

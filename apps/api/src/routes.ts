@@ -9,6 +9,10 @@ import { usersRouter } from "./modules/users/users.routes.js";
 import { privateNotesRouter } from "./modules/private-notes/private-notes.routes.js";
 import { recentlyViewedRouter } from "./modules/recently-viewed/recently-viewed.routes.js";
 import { adminRouter } from "./modules/admin/admin.routes.js";
+import { aiRouter } from "./modules/ai/ai.routes.js";
+import { studentRouter } from "./modules/student/student.routes.js";
+import { authenticate } from "./middleware/authenticate.js";
+import { requirePermission } from "./middleware/require-permission.js";
 
 export const v1Router = Router();
 
@@ -17,8 +21,10 @@ v1Router.use("/auth", authRouter);
 v1Router.use("/academic", academicRouter);
 v1Router.use("/notes", notesRouter);
 v1Router.use("/moderation", moderationRouter);
-v1Router.use("/bookmarks", bookmarksRouter);
-v1Router.use("/users", usersRouter);
-v1Router.use("/private-notes", privateNotesRouter);
-v1Router.use("/recently-viewed", recentlyViewedRouter);
-v1Router.use("/admin", adminRouter);
+v1Router.use("/bookmarks", authenticate, bookmarksRouter);
+v1Router.use("/users", authenticate, usersRouter);
+v1Router.use("/private-notes", authenticate, requirePermission('student.notes.manage'), privateNotesRouter);
+v1Router.use("/recently-viewed", authenticate, recentlyViewedRouter);
+v1Router.use("/admin", authenticate, requirePermission('admin.users.manage'), adminRouter);
+v1Router.use("/ai", authenticate, requirePermission('student.ai.use'), aiRouter);
+v1Router.use("/student", authenticate, studentRouter);

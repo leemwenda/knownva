@@ -322,3 +322,62 @@ model PaymentEvent {
 
   @@map("payment_events")
 }
+
+model AIDocument {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  fileName  String
+  filePath  String
+  createdAt DateTime @default(now())
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AIChatMessage[]
+
+  @@map("ai_documents")
+}
+
+model AIChatMessage {
+  id         Int      @id @default(autoincrement())
+  documentId Int
+  userId     Int
+  role       String   // 'user' or 'assistant'
+  content    String   @db.Text
+  createdAt  DateTime @default(now())
+
+  document AIDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("ai_chat_messages")
+}
+
+model StudyPlan {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  date      DateTime
+  type      String   // 'exam', 'goal', 'reminder'
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("study_plans")
+}
+
+model Flashcard {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  front     String
+  back      String   @db.Text
+  deckName  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("flashcards")
+}
+
+model AIDocument {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  fileName  String
+  textContent String  @db.LongText @default("")
+  createdAt DateTime @default(now())
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  AIChatMessage[]
+  @@map("ai_documents")
+}

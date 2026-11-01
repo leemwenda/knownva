@@ -67,6 +67,14 @@ export const notesController = {
     } catch (err) { next(err); }
   },
 
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = parseId(req.params.id);
+      const note = await notesService.update(id, req.body, req.user);
+      res.json({ ok: true, note });
+    } catch (err) { next(err); }
+  },
+
   async submitReview(req: Request, res: Response, next: NextFunction) {
     try {
       const id = parseId(req.params.id);

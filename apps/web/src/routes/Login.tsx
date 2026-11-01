@@ -22,32 +22,32 @@ export function Login() {
   };
 
   return (
-    <div className="mx-auto max-w-md w-full pt-12 animate-fade-in-up">
-      <div className="glass rounded-[2rem] p-10">
-        <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+    <div className="mx-auto max-w-md w-full pt-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="card p-10">
+        <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500 shadow-lg shadow-brand-500/30">
           <LogIn className="h-6 w-6 text-white" />
         </div>
-        <h1 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Welcome back</h1>
-        <p className="text-center text-slate-400 mb-8">Log in to access your dashboard.</p>
+        <h1 className="text-3xl font-extrabold text-slate-900 text-center mb-2 tracking-tight">Welcome back</h1>
+        <p className="text-center text-slate-500 mb-8">Log in to access your dashboard.</p>
         
-        {error && <div className="mb-6 rounded-xl bg-red-500/10 p-4 text-sm text-red-400 border border-red-500/20 text-center font-medium">{error}</div>}
+        {error && <div className="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-100 text-center font-medium">{error}</div>}
         
         <form onSubmit={onSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email</label>
-            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600" placeholder="you@university.edu" />
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
+            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" placeholder="you@university.edu" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
-            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-600" placeholder="••••••••" />
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
+            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-field" placeholder="••••••••" />
           </div>
-          <button disabled={busy} className="group mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-white py-3.5 text-sm font-bold text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-slate-200 disabled:opacity-50 transition-all">
+          <button disabled={busy} className="btn-primary group mt-4 w-full flex items-center justify-center gap-2 py-3.5 text-base">
             {busy ? 'Authenticating…' : 'Log in'}
-            {!busy && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
+            {!busy && <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />}
           </button>
         </form>
-        <p className="mt-8 text-center text-sm text-slate-400">
-          Don't have an account? <Link to="/register" className="font-semibold text-white hover:text-indigo-300 transition-colors">Sign up</Link>
+        <p className="mt-8 text-center text-sm text-slate-500">
+          Don't have an account? <Link to="/register" className="font-semibold text-brand-600 hover:text-brand-700">Sign up</Link>
         </p>
       </div>
     </div>

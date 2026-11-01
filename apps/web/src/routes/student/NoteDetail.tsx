@@ -1,7 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { api } from '../lib/api';
-import { useAuth } from '../lib/auth';
+import { api } from '../../lib/api';
+import { useAuth } from '../../lib/auth';
 import { Download, ChevronLeft, Star, FileText, Bookmark } from 'lucide-react';
 
 interface Detail { id: number; title: string; description: string; resourceType: string; isPremium: boolean; averageRating: number; ratingCount: number; downloadsCount: number; uploader: { id: number; name: string } | null; }

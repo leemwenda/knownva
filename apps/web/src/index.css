@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 body {
-  @apply text-[#172033] antialiased min-h-screen;
+  @apply text-slate-900 antialiased min-h-screen;
   background-color: #F8FAFC;
   background-image: 
     radial-gradient(at 0% 0%, hsla(253, 80%, 96%, 1) 0, transparent 50%), 
@@ -14,13 +14,12 @@ body {
   background-attachment: fixed;
 }
 
-/* Using standard indigo colors here so Tailwind NEVER crashes */
 .card {
-  @apply bg-white rounded-2xl border border-slate-200/60 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] transition-all duration-300;
+  @apply bg-white rounded-2xl border border-slate-200/80 shadow-sm transition-all duration-300;
 }
 
 .card:hover {
-  @apply shadow-[0_8px_30px_-4px_rgba(6,81,237,0.1)] border-indigo-200;
+  @apply shadow-md border-indigo-200;
 }
 
 .input-field {
@@ -28,5 +27,5 @@ body {
 }
 
 .btn-primary {
-  @apply rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 transition-all;
+  @apply rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api } from '../lib/api';
+import { api } from '../../lib/api';
 import { Users, FileText, Download, TrendingUp } from 'lucide-react';
 
 interface Stats { users: { total: number }; notes: { total: number; pending: number; approved: number }; downloads: { last24h: number; last7d: number; last30d: number }; }

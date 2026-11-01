@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api } from '../lib/api';
+import { api } from '../../lib/api';
 import { CheckCircle, XCircle, FileText } from 'lucide-react';
 
 interface PendingNote { id: number; title: string; description: string; uploader: { name: string; email: string }; }

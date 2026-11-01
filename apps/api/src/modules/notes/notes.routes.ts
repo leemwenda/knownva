@@ -23,3 +23,4 @@ notesRouter.get("/:id/download", authenticate, notesController.download);
 
 // Lecturers + superadmin only (checked inside service)
 notesRouter.post("/", authenticate, upload.single("file"), notesController.upload);
+notesRouter.patch("/:id", authenticate, notesController.update);
