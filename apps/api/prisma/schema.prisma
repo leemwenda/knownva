@@ -77,6 +77,10 @@ model User {
   paymentEvents   PaymentEvent[]
 
   @@map("users")
+  aiDocuments AIDocument[]
+  studyPlans StudyPlan[]
+  flashcards Flashcard[]
+  quizQuestions QuizQuestion[]
 }
 
 model Session {
@@ -247,6 +251,11 @@ model PrivateNote {
 
   @@index([userId], map: "private_notes_user_idx")
   @@map("private_notes")
+
+  fileName  String?
+  filePath  String?
+  fileMime  String?
+  fileSize  Int?
 }
 
 model Report {
@@ -323,19 +332,6 @@ model PaymentEvent {
   @@map("payment_events")
 }
 
-model AIDocument {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  fileName  String
-  filePath  String
-  createdAt DateTime @default(now())
-
-  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages AIChatMessage[]
-
-  @@map("ai_documents")
-}
-
 model AIChatMessage {
   id         Int      @id @default(autoincrement())
   documentId Int
@@ -349,12 +345,24 @@ model AIChatMessage {
   @@map("ai_chat_messages")
 }
 
+model AIDocument {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  fileName  String
+  textContent String  @db.LongText
+  createdAt DateTime @default(now())
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  AIChatMessage[]
+  @@map("ai_documents")
+  quizQuestions QuizQuestion[]
+}
+
 model StudyPlan {
   id        Int      @id @default(autoincrement())
   userId    Int
   title     String
   date      DateTime
-  type      String   // 'exam', 'goal', 'reminder'
+  type      String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("study_plans")
@@ -371,13 +379,17 @@ model Flashcard {
   @@map("flashcards")
 }
 
-model AIDocument {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  fileName  String
-  textContent String  @db.LongText @default("")
-  createdAt DateTime @default(now())
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  messages  AIChatMessage[]
-  @@map("ai_documents")
+
+model QuizQuestion {
+  id           Int        @id @default(autoincrement())
+  userId       Int
+  documentId   Int
+  question     String     @db.Text
+  options      Json
+  correctIndex Int
+  explanation  String     @db.Text
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  document     AIDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  @@map("quiz_questions")
 }

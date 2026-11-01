@@ -24,25 +24,25 @@ export function AdminUsers() {
     catch (err) { alert('Failed to update status'); }
   };
 
-  if (loading) return <div className="p-10 text-slate-500">Loading...</div>;
+  if (loading) return <div className="p-10 text-slate-500 dark:text-slate-400">Loading...</div>;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-slate-900">User Management</h1>
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">User Management</h1>
       </div>
       <div className="card overflow-x-auto">
         <table className="w-full text-sm text-left">
-          <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+          <thead className="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 dark:bg-slate-900 dark:text-slate-400 dark:border-slate-700">
             <tr><th className="px-6 py-4">Name</th><th className="px-6 py-4">Email</th><th className="px-6 py-4">Role</th><th className="px-6 py-4">Status</th><th className="px-6 py-4">Actions</th></tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
             {users.map(u => (
               <tr key={u.id} className="hover:bg-slate-50 transition-colors">
-                <td className="px-6 py-4 font-semibold text-slate-900">{u.name}</td>
-                <td className="px-6 py-4 text-slate-500">{u.email}</td>
+                <td className="px-6 py-4 font-semibold text-slate-900 dark:text-white">{u.name}</td>
+                <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{u.email}</td>
                 <td className="px-6 py-4">
-                  <select value={u.role} onChange={(e) => changeRole(u.id, e.target.value)} className="bg-slate-100 text-slate-700 text-xs font-bold uppercase rounded-md px-2 py-1 outline-none cursor-pointer">
+                  <select value={u.role} onChange={(e) => changeRole(u.id, e.target.value)} className="bg-slate-100 text-slate-700 text-xs font-bold uppercase rounded-md px-2 py-1 outline-none cursor-pointer dark:bg-slate-800 dark:text-slate-200">
                     <option value="student">Student</option>
                     <option value="lecturer">Lecturer</option>
                     <option value="superadmin">Superadmin</option>

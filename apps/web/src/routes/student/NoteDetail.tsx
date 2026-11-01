@@ -50,7 +50,7 @@ export function NoteDetail() {
 
   return (
     <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
-      <Link to="/notes" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-brand-500 transition-colors"><ChevronLeft className="h-4 w-4" /> Back to library</Link>
+      <Link to="/notes" className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-brand-500 transition-colors dark:text-slate-400"><ChevronLeft className="h-4 w-4" /> Back to library</Link>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <article className="lg:col-span-2 card p-8 sm:p-10 h-fit">
@@ -58,13 +58,13 @@ export function NoteDetail() {
             <div className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-brand-600 uppercase bg-brand-50 px-3 py-1.5 rounded-lg"><FileText className="h-4 w-4" /> {note.resourceType}</div>
             {note.isPremium && <span className="rounded-full bg-amber-100 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-700 uppercase">Premium</span>}
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-tight">{note.title}</h1>
-          <p className="text-lg text-slate-600 leading-relaxed mb-8">{note.description}</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 leading-tight dark:text-white">{note.title}</h1>
+          <p className="text-lg text-slate-600 leading-relaxed mb-8 dark:text-slate-300">{note.description}</p>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-6 border-y border-slate-100 mb-8">
-            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1">Uploader</dt><dd className="text-sm font-semibold text-slate-900">{note.uploader?.name ?? '—'}</dd></div>
-            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1">Rating</dt><dd className="text-sm font-semibold text-slate-900 flex items-center gap-1"><Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400"/> {note.averageRating} ({note.ratingCount})</dd></div>
-            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1">Downloads</dt><dd className="text-sm font-semibold text-slate-900">{note.downloadsCount}</dd></div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 py-6 border-y border-slate-100 mb-8 dark:border-slate-800">
+            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1 dark:text-slate-500">Uploader</dt><dd className="text-sm font-semibold text-slate-900 dark:text-white">{note.uploader?.name ?? '—'}</dd></div>
+            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1 dark:text-slate-500">Rating</dt><dd className="text-sm font-semibold text-slate-900 flex items-center gap-1 dark:text-white"><Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400"/> {note.averageRating} ({note.ratingCount})</dd></div>
+            <div><dt className="text-xs font-bold text-slate-400 uppercase mb-1 dark:text-slate-500">Downloads</dt><dd className="text-sm font-semibold text-slate-900 dark:text-white">{note.downloadsCount}</dd></div>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-3">
@@ -79,7 +79,7 @@ export function NoteDetail() {
 
         <aside className="space-y-6">
           <div className="card p-6">
-            <h3 className="font-bold text-slate-900 mb-4">Leave a Review</h3>
+            <h3 className="font-bold text-slate-900 mb-4 dark:text-white">Leave a Review</h3>
             {reviewMsg && <p className="text-xs text-brand-500 mb-2 font-medium">{reviewMsg}</p>}
             <form onSubmit={submitReview} className="space-y-4">
               <select value={rating} onChange={e => setRating(Number(e.target.value))} className="input-field cursor-pointer">
@@ -95,15 +95,15 @@ export function NoteDetail() {
           </div>
           
           <div className="space-y-3">
-            <h3 className="font-bold text-slate-900 px-1">Recent Reviews</h3>
-            {reviews.length === 0 && <p className="text-sm text-slate-500 px-1">No reviews yet.</p>}
+            <h3 className="font-bold text-slate-900 px-1 dark:text-white">Recent Reviews</h3>
+            {reviews.length === 0 && <p className="text-sm text-slate-500 px-1 dark:text-slate-400">No reviews yet.</p>}
             {reviews.map(r => (
               <div key={r.id} className="card p-4">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-bold text-slate-900">{r.user.name}</span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{r.user.name}</span>
                   <span className="text-xs font-bold text-amber-500">★ {r.rating}</span>
                 </div>
-                <p className="text-sm text-slate-500">{r.comment}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{r.comment}</p>
               </div>
             ))}
           </div>

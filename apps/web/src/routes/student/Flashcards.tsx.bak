@@ -1,0 +1,116 @@
+import { useState, useEffect, type FormEvent } from 'react';
+import { api } from '../../lib/api';
+import { Plus, BookOpen, Layers } from 'lucide-react';
+
+const PALETTES = [
+  { glow: 'from-purple-500/20', stroke: 'stroke-purple-500', bg: 'bg-purple-500' },
+  { glow: 'from-blue-500/20', stroke: 'stroke-blue-500', bg: 'bg-blue-500' },
+  { glow: 'from-amber-500/20', stroke: 'stroke-amber-500', bg: 'bg-amber-500' },
+  { glow: 'from-emerald-500/20', stroke: 'stroke-emerald-500', bg: 'bg-emerald-500' },
+  { glow: 'from-orange-500/20', stroke: 'stroke-orange-500', bg: 'bg-orange-500' },
+  { glow: 'from-red-500/20', stroke: 'stroke-red-500', bg: 'bg-red-500' },
+];
+
+export function Flashcards() {
+  const [cards, setCards] = useState<any[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [front, setFront] = useState('');
+  const [back, setBack] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  const load = () => { api<{ items: any[] }>('/student/flashcards').then(r => setCards(r.items)).finally(() => setLoading(false)); };
+  useEffect(() => { load(); }, []);
+
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await api('/student/flashcards', { method: 'POST', body: JSON.stringify({ front, back, deckName: 'General' }) });
+    setFront(''); setBack(''); setIsCreating(false); load();
+  };
+
+  if (loading) return <div className="flex justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent"></div></div>;
+
+  return (
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">Flashcards</h1>
+          <p className="text-slate-500 dark:text-slate-400">Review your study materials.</p>
+        </div>
+        <button onClick={() => setIsCreating(!isCreating)} className="btn-primary flex items-center gap-2">
+          <Plus className="h-4 w-4" /> New Card
+        </button>
+      </div>
+
+      {isCreating && (
+        <form onSubmit={onSubmit} className="card p-6 space-y-4 border-brand-200 dark:border-brand-900">
+          <input required placeholder="Front (Question)" value={front} onChange={e=>setFront(e.target.value)} className="input-field" />
+          <textarea required placeholder="Back (Answer)" value={back} onChange={e=>setBack(e.target.value)} className="input-field" rows={3} />
+          <div className="flex gap-3">
+            <button type="submit" className="btn-primary flex-1">Save Card</button>
+            <button type="button" onClick={() => setIsCreating(false)} className="px-6 py-2.5 rounded-xl font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Cancel</button>
+          </div>
+        </form>
+      )}
+
+      {cards.length === 0 && !isCreating && (
+        <div className="card p-16 text-center border-dashed border-2 dark:border-white/10">
+          <Layers className="h-12 w-12 text-slate-300 dark:text-slate-700 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">No flashcards yet</h3>
+          <p className="text-slate-500 dark:text-slate-400">Click "New Card" or generate a study pack.</p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cards.map((card, index) => {
+          const palette = PALETTES[index % PALETTES.length];
+          return (
+            <div key={card.id} 
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl p-6 aspect-[4/3] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl
+              bg-white border border-slate-200/60 shadow-sm
+              dark:bg-[#121212] dark:border-white/5">
+              
+              {/* Top Row */}
+              <div className="flex justify-between items-start z-10">
+                <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${palette.bg} bg-opacity-20 dark:bg-opacity-10`}>
+                  <BookOpen className={`h-5 w-5 ${palette.bg.replace('bg-', 'text-')}`} />
+                </div>
+                <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">
+                  {new Date(card.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                </span>
+              </div>
+
+              {/* Content */}
+              <div className="z-10 mt-6 mb-4">
+                <p className="text-[10px] font-extrabold tracking-widest text-slate-400 dark:text-slate-500 uppercase mb-2">Flashcard</p>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight line-clamp-3">
+                  {card.front}
+                </h2>
+                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-sm font-medium text-slate-600 dark:text-slate-300 line-clamp-2 border-t border-slate-100 dark:border-white/10 pt-2">
+                    {card.back}
+                  </p>
+                </div>
+              </div>
+
+              {/* Bottom Tag */}
+              <div className="z-10">
+                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1.5 rounded-md">
+                   {card.deckName || 'General'}
+                 </span>
+              </div>
+
+              {/* Abstract Animated Glow/Pattern */}
+              <div className={`absolute -bottom-10 -right-10 w-48 h-48 bg-gradient-to-tr ${palette.glow} to-transparent blur-2xl opacity-50 dark:opacity-30 transition-transform duration-500 group-hover:scale-150`}></div>
+              
+              <svg className="absolute bottom-0 right-0 w-40 h-40 opacity-10 dark:opacity-20 transition-transform duration-500 group-hover:scale-110" viewBox="0 0 100 100" fill="none">
+                {index % 3 === 0 && <path d="M10 90 Q 30 70 50 80 T 90 60" className={`${palette.stroke}`} strokeWidth="8" strokeLinecap="round"/>}
+                {index % 3 === 1 && <circle cx="80" cy="80" r="30" className={`${palette.stroke} fill-current`} />}
+                {index % 3 === 2 && <rect x="60" y="60" width="40" height="40" className={`${palette.stroke} fill-current`} transform="rotate(45 60 60)" />}
+              </svg>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

@@ -29,22 +29,22 @@ export function Register() {
         <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-600/30">
           <UserPlus className="h-6 w-6 text-white" />
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 text-center mb-2 tracking-tight">Create an account</h1>
-        <p className="text-center text-slate-500 mb-8">Join thousands of students learning better.</p>
+        <h1 className="text-3xl font-extrabold text-slate-900 text-center mb-2 tracking-tight dark:text-white">Create an account</h1>
+        <p className="text-center text-slate-500 mb-8 dark:text-slate-400">Join thousands of students learning better.</p>
         
         {error && <div className="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-600 border border-red-100 text-center font-medium">{error}</div>}
         
         <form onSubmit={onSubmit} className="space-y-5">
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Full Name</label>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 dark:text-slate-400">Full Name</label>
             <input required value={name} onChange={(e) => setName(e.target.value)} className="input-field" placeholder="John Doe" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 dark:text-slate-400">Email</label>
             <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="input-field" placeholder="you@university.edu" />
           </div>
           <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Password</label>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 dark:text-slate-400">Password</label>
             <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input-field" placeholder="Min 8 characters" />
           </div>
           <button disabled={busy} className="btn-primary group mt-4 w-full flex items-center justify-center gap-2 py-3.5 text-base">
@@ -52,7 +52,7 @@ export function Register() {
             {!busy && <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />}
           </button>
         </form>
-        <p className="mt-8 text-center text-sm text-slate-500">
+        <p className="mt-8 text-center text-sm text-slate-500 dark:text-slate-400">
           Already have an account? <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-700">Log in</Link>
         </p>
       </div>

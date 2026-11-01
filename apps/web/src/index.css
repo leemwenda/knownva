@@ -1,31 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply text-slate-900 antialiased min-h-screen;
-  background-color: #F8FAFC;
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(253, 80%, 96%, 1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225, 100%, 97%, 1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339, 100%, 97%, 1) 0, transparent 50%);
-  background-attachment: fixed;
+@layer base {
+  body {
+    @apply antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background-color: #FAF8F2;
+    color: #0A1F1F;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(139, 127, 240, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.10) 0%, transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(240, 160, 160, 0.08) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
+  html.dark body {
+    background-color: #05050A;
+    color: #E2E8F0;
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(99, 91, 219, 0.15) 0%, transparent 50%);
+  }
 }
 
-.card {
-  @apply bg-white rounded-2xl border border-slate-200/80 shadow-sm transition-all duration-300;
+/* Animations */
+@keyframes kva-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%      { transform: translateY(-16px) rotate(1deg); }
+}
+@keyframes kva-float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50%      { transform: translateY(14px) rotate(-1deg); }
+}
+@keyframes kva-slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes kva-glow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.08); }
 }
 
-.card:hover {
-  @apply shadow-md border-indigo-200;
+.animate-float         { animation: kva-float 6s ease-in-out infinite; }
+.animate-float-delayed { animation: kva-float-delayed 7s ease-in-out infinite; }
+.animate-slide-up      { animation: kva-slide-up 0.8s ease-out forwards; }
+.animate-pulse-glow    { animation: kva-glow 8s ease-in-out infinite; }
+
+/* Light glass card (for landing on cream) */
+.glass-light {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 20px 60px -20px rgba(15, 23, 42, 0.15), 0 8px 20px -8px rgba(15, 23, 42, 0.1);
 }
 
-.input-field {
-  @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-900 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-400;
+/* Dark glass card (for dark sections) */
+.glass-dark {
+  background-color: rgba(18, 18, 26, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
-.btn-primary {
-  @apply rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all;
+/* Gradient text */
+.text-gradient {
+  background: linear-gradient(90deg, #635BDB, #C084FC, #22D3EE);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.15); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(15, 23, 42, 0.25); }

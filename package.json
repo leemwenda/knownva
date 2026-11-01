@@ -2,9 +2,14 @@
   "name": "knownva",
   "private": true,
   "version": "2.0.0",
-  "description": "KnowVa Academic Resource Platform — production monorepo",
-  "workspaces": ["apps/*", "packages/*"],
-  "engines": { "node": ">=20.11.0 <25" },
+  "description": "KnowVa Academic Resource Platform \u2014 production monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.11.0 <25"
+  },
   "scripts": {
     "dev:api": "npm run dev -w @knownva/api",
     "dev:web": "npm run dev -w @knownva/web",
@@ -13,6 +18,11 @@
     "test": "npm run test --workspaces --if-present",
     "prisma:generate": "npm run prisma:generate -w @knownva/api",
     "prisma:migrate": "npm run prisma:migrate -w @knownva/api",
-    "prisma:deploy": "npm run prisma:deploy -w @knownva/api"
+    "prisma:deploy": "npm run prisma:deploy -w @knownva/api",
+    "dev": "concurrently -n API,WEB -c blue,magenta --kill-others-on-fail \"npm run dev:api\" \"npm run dev:web\"",
+    "kill": "for p in 5000 5173 5174 5175; do fuser -k $p/tcp 2>/dev/null; done; pkill -f 'tsx watch' 2>/dev/null; pkill -f vite 2>/dev/null; echo '\u2713 all dev servers killed'"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
   }
 }

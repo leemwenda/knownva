@@ -22,8 +22,8 @@ export function DashboardLayout() {
   return (
     <div className="flex h-screen bg-[#F8FAFC]">
       {/* Sidebar */}
-      <aside className="w-64 flex-shrink-0 border-r border-slate-200 bg-white flex flex-col hidden md:flex">
-        <div className="h-16 flex items-center px-6 border-b border-slate-100">
+      <aside className="w-64 flex-shrink-0 border-r border-slate-200 bg-white flex flex-col hidden md:flex dark:bg-slate-800 dark:border-slate-700">
+        <div className="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800">
           <Link to="/dashboard" className="flex items-center gap-2 text-xl font-bold text-brand-900">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-white shadow-sm">
               <BookOpen className="h-4 w-4" />
@@ -33,7 +33,7 @@ export function DashboardLayout() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-1">
-          <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4">Menu</p>
+          <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-4 dark:text-slate-500">Menu</p>
           {navLink('/dashboard', 'Overview', LayoutDashboard)}
           {navLink('/notes', 'Explore Resources', Search)}
           {navLink('/library', 'My Library', Library)}
@@ -41,25 +41,25 @@ export function DashboardLayout() {
 
           {user?.role === 'superadmin' && (
             <>
-              <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6">Admin</p>
+              <p className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 mt-6 dark:text-slate-500">Admin</p>
               {navLink('/admin', 'Dashboard', Shield)}
               {navLink('/admin/moderation', 'Moderation', Shield)}
             </>
           )}
         </div>
 
-        <div className="p-4 border-t border-slate-100">
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800">
           <Link to="/profile" className="flex items-center gap-3 rounded-xl p-2 hover:bg-slate-50 transition-colors">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-100 text-brand-600 font-bold">
               {user?.name.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="text-sm font-semibold text-slate-900 truncate">{user?.name}</p>
-              <p className="text-xs text-slate-500 truncate capitalize">{user?.role}</p>
+              <p className="text-sm font-semibold text-slate-900 truncate dark:text-white">{user?.name}</p>
+              <p className="text-xs text-slate-500 truncate capitalize dark:text-slate-400">{user?.role}</p>
             </div>
-            <Settings className="h-4 w-4 text-slate-400" />
+            <Settings className="h-4 w-4 text-slate-400 dark:text-slate-500" />
           </Link>
-          <button onClick={onLogout} className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-100 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 transition-colors">
+          <button onClick={onLogout} className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-100 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 transition-colors dark:bg-slate-800 dark:text-slate-300">
             <LogOut className="h-4 w-4" /> Log out
           </button>
         </div>
@@ -68,12 +68,12 @@ export function DashboardLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Mobile Header */}
-        <header className="h-16 flex md:hidden items-center justify-between px-4 border-b border-slate-200 bg-white">
+        <header className="h-16 flex md:hidden items-center justify-between px-4 border-b border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700">
            <Link to="/dashboard" className="flex items-center gap-2 text-lg font-bold text-brand-900">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500 text-white"><BookOpen className="h-3 w-3" /></div>
             KnowVa
           </Link>
-          <button onClick={onLogout} className="text-slate-500"><LogOut className="h-5 w-5" /></button>
+          <button onClick={onLogout} className="text-slate-500 dark:text-slate-400"><LogOut className="h-5 w-5" /></button>
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8">

@@ -47,7 +47,7 @@ export function Layout() {
                   </div>
                   <span className="hidden sm:inline">{user.name}</span>
                 </Link>
-                <button onClick={onLogout} className="rounded-full p-2 text-slate-500 hover:bg-slate-800 hover:text-red-400 transition-colors" title="Log out">
+                <button onClick={onLogout} className="rounded-full p-2 text-slate-500 hover:bg-slate-800 hover:text-red-400 transition-colors dark:text-slate-400" title="Log out">
                   <LogOut className="h-4 w-4" />
                 </button>
               </div>
@@ -67,7 +67,7 @@ export function Layout() {
         <Outlet />
       </main>
       
-      <footer className="border-t border-slate-800 py-6 text-center text-sm text-slate-500">
+      <footer className="border-t border-slate-800 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
         <p>© {new Date().getFullYear()} KnowVa. Elevate your learning.</p>
       </footer>
     </div>
