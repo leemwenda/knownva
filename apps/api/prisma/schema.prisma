@@ -1,0 +1,323 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  student
+  lecturer
+  superadmin
+}
+
+enum UserStatus {
+  active
+  suspended
+}
+
+enum NoteStatus {
+  pending
+  approved
+  rejected
+  removed
+}
+
+enum ReportStatus {
+  open
+  under_review
+  dismissed
+  resolved
+}
+
+enum SubscriptionPlan {
+  free
+  premium
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  expired
+}
+
+model User {
+  id                Int          @id @default(autoincrement())
+  name              String       @db.VarChar(150)
+  email             String       @unique(map: "users_email_idx") @db.VarChar(255)
+  passwordHash      String       @map("password_hash") @db.Text
+  role              Role         @default(student)
+  status            UserStatus   @default(active)
+  institution       String?      @db.VarChar(200)
+  bio               String?      @db.Text
+  fieldOfStudy      String?      @map("field_of_study") @db.VarChar(150)
+  emailVerified     Boolean      @default(false) @map("email_verified")
+  verificationToken String?      @map("verification_token") @db.VarChar(128)
+  resetToken        String?      @map("reset_token") @db.VarChar(128)
+  resetTokenExpiry  DateTime?    @map("reset_token_expiry") @db.DateTime(3)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt         DateTime     @default(now()) @updatedAt @map("updated_at") @db.DateTime(3)
+
+  sessions        Session[]
+  refreshTokens   RefreshToken[]
+  uploadedNotes   Note[]           @relation("NoteUploader")
+  reviewedNotes   Note[]           @relation("NoteReviewer")
+  reviews         Review[]
+  bookmarks       Bookmark[]
+  recentlyViewed  RecentlyViewed[]
+  privateNotes    PrivateNote[]
+  reports         Report[]         @relation("ReportReporter")
+  resolvedReports Report[]         @relation("ReportResolver")
+  downloads       Download[]
+  subscription    Subscription?
+  auditLogs       AuditLog[]
+  paymentEvents   PaymentEvent[]
+
+  @@map("users")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique(map: "sessions_token_idx") @db.VarChar(128)
+  userId    Int      @map("user_id")
+  expiresAt DateTime @map("expires_at") @db.DateTime(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  tokenHash String    @unique(map: "refresh_tokens_hash_idx") @db.VarChar(128)
+  userId    Int       @map("user_id")
+  expiresAt DateTime  @map("expires_at") @db.DateTime(3)
+  revokedAt DateTime? @map("revoked_at") @db.DateTime(3)
+  userAgent String?   @map("user_agent") @db.VarChar(500)
+  ipAddress String?   @map("ip_address") @db.VarChar(64)
+  createdAt DateTime  @default(now()) @map("created_at") @db.DateTime(3)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Institution {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "institutions_name_idx") @db.VarChar(200)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  notes     Note[]
+
+  @@map("institutions")
+}
+
+model Field {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "fields_name_idx") @db.VarChar(200)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  units     Unit[]
+  notes     Note[]
+
+  @@map("fields")
+}
+
+model Level {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique(map: "levels_name_idx") @db.VarChar(100)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  units     Unit[]
+  notes     Note[]
+
+  @@map("levels")
+}
+
+model Unit {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(200)
+  fieldId   Int?     @map("field_id")
+  levelId   Int?     @map("level_id")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  field     Field?   @relation(fields: [fieldId], references: [id], onDelete: SetNull)
+  level     Level?   @relation(fields: [levelId], references: [id], onDelete: SetNull)
+  notes     Note[]
+
+  @@index([fieldId, levelId], map: "units_field_level_idx")
+  @@map("units")
+}
+
+model Note {
+  id              Int         @id @default(autoincrement())
+  title           String      @db.VarChar(250)
+  description     String      @default("") @db.Text
+  institutionId   Int?        @map("institution_id")
+  fieldId         Int?        @map("field_id")
+  levelId         Int?        @map("level_id")
+  unitId          Int?        @map("unit_id")
+  semester        String?     @db.VarChar(50)
+  academicYear    String?     @map("academic_year") @db.VarChar(20)
+  resourceType    String      @default("Notes") @map("resource_type") @db.VarChar(50)
+  isPremium       Boolean     @default(false) @map("is_premium")
+  fileName        String      @map("file_name") @db.VarChar(255)
+  filePath        String      @map("file_path") @db.VarChar(500)
+  fileSize        Int         @default(0) @map("file_size")
+  fileMime        String      @default("application/pdf") @map("file_mime") @db.VarChar(120)
+  status          NoteStatus  @default(pending)
+  rejectionReason String?     @map("rejection_reason") @db.Text
+  uploaderId      Int         @map("uploader_id")
+  reviewedBy      Int?        @map("reviewed_by")
+  reviewedAt      DateTime?   @map("reviewed_at") @db.DateTime(3)
+  downloadsCount  Int         @default(0) @map("downloads_count")
+  viewsCount      Int         @default(0) @map("views_count")
+  ratingSum       Int         @default(0) @map("rating_sum")
+  ratingCount     Int         @default(0) @map("rating_count")
+  createdAt       DateTime    @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt       DateTime    @default(now()) @updatedAt @map("updated_at") @db.DateTime(3)
+
+  institution Institution? @relation(fields: [institutionId], references: [id], onDelete: SetNull)
+  field       Field?       @relation(fields: [fieldId], references: [id], onDelete: SetNull)
+  level       Level?       @relation(fields: [levelId], references: [id], onDelete: SetNull)
+  unit        Unit?        @relation(fields: [unitId], references: [id], onDelete: SetNull)
+  uploader    User         @relation("NoteUploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+  reviewer    User?        @relation("NoteReviewer", fields: [reviewedBy], references: [id], onDelete: SetNull)
+
+  reviews         Review[]
+  bookmarks       Bookmark[]
+  recentlyViewed  RecentlyViewed[]
+  reports         Report[]
+  downloads       Download[]
+
+  @@index([status], map: "notes_status_idx")
+  @@index([uploaderId], map: "notes_uploader_idx")
+  @@map("notes")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  noteId    Int      @map("note_id")
+  userId    Int      @map("user_id")
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, userId], map: "reviews_note_user_idx")
+  @@map("reviews")
+}
+
+model Bookmark {
+  id        Int      @id @default(autoincrement())
+  noteId    Int      @map("note_id")
+  userId    Int      @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, userId], map: "bookmarks_note_user_idx")
+  @@map("bookmarks")
+}
+
+model RecentlyViewed {
+  id       Int      @id @default(autoincrement())
+  noteId   Int      @map("note_id")
+  userId   Int      @map("user_id")
+  viewedAt DateTime @default(now()) @map("viewed_at") @db.DateTime(3)
+  note     Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "recently_viewed_user_idx")
+  @@map("recently_viewed")
+}
+
+model PrivateNote {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  title     String   @db.VarChar(250)
+  content   String   @default("") @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.DateTime(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "private_notes_user_idx")
+  @@map("private_notes")
+}
+
+model Report {
+  id             Int          @id @default(autoincrement())
+  noteId         Int          @map("note_id")
+  reporterId     Int          @map("reporter_id")
+  reason         String       @db.VarChar(100)
+  details        String?      @db.Text
+  status         ReportStatus @default(open)
+  resolutionNote String?      @map("resolution_note") @db.Text
+  resolvedBy     Int?         @map("resolved_by")
+  resolvedAt     DateTime?    @map("resolved_at") @db.DateTime(3)
+  createdAt      DateTime     @default(now()) @map("created_at") @db.DateTime(3)
+  note           Note         @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  reporter       User         @relation("ReportReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  resolver       User?        @relation("ReportResolver", fields: [resolvedBy], references: [id], onDelete: SetNull)
+
+  @@index([status], map: "reports_status_idx")
+  @@map("reports")
+}
+
+model Download {
+  id        Int      @id @default(autoincrement())
+  noteId    Int      @map("note_id")
+  userId    Int      @map("user_id")
+  isPremium Boolean  @default(false) @map("is_premium")
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  note      Note     @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt], map: "downloads_user_created_idx")
+  @@map("downloads")
+}
+
+model Subscription {
+  id                   Int                @id @default(autoincrement())
+  userId               Int                @unique @map("user_id")
+  plan                 SubscriptionPlan   @default(free)
+  status               SubscriptionStatus @default(active)
+  stripeCustomerId     String?            @map("stripe_customer_id") @db.VarChar(150)
+  stripeSubscriptionId String?            @map("stripe_subscription_id") @db.VarChar(150)
+  currentPeriodEnd     DateTime?          @map("current_period_end") @db.DateTime(3)
+  createdAt            DateTime           @default(now()) @map("created_at") @db.DateTime(3)
+  updatedAt            DateTime           @default(now()) @updatedAt @map("updated_at") @db.DateTime(3)
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actorId    Int?     @map("actor_id")
+  action     String   @db.VarChar(150)
+  targetType String?  @map("target_type") @db.VarChar(100)
+  targetId   Int?     @map("target_id")
+  details    Json?
+  createdAt  DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt], map: "audit_logs_created_idx")
+  @@map("audit_logs")
+}
+
+model PaymentEvent {
+  id            Int      @id @default(autoincrement())
+  stripeEventId String?  @map("stripe_event_id") @db.VarChar(150)
+  userId        Int?     @map("user_id")
+  type          String   @db.VarChar(100)
+  amount        Decimal? @db.Decimal(10, 2)
+  status        String   @default("success") @db.VarChar(50)
+  createdAt     DateTime @default(now()) @map("created_at") @db.DateTime(3)
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("payment_events")
+}
