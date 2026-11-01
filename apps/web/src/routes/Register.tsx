@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { useAuth } from '../lib/auth';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, ArrowRight } from 'lucide-react';
 
 export function Register() {
   const [name, setName] = useState('');
@@ -24,35 +24,36 @@ export function Register() {
   };
 
   return (
-    <div className="mx-auto max-w-md w-full pt-10">
-      <div className="rounded-3xl bg-white p-8 shadow-xl ring-1 ring-slate-200">
-        <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
-          <UserPlus className="h-6 w-6" />
+    <div className="mx-auto max-w-md w-full pt-12 animate-fade-in-up">
+      <div className="glass rounded-[2rem] p-10">
+        <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 shadow-lg shadow-cyan-500/30">
+          <UserPlus className="h-6 w-6 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-center mb-2">Create an account</h1>
-        <p className="text-center text-slate-500 mb-8">Join thousands of students learning better.</p>
+        <h1 className="text-3xl font-extrabold text-white text-center mb-2 tracking-tight">Create an account</h1>
+        <p className="text-center text-slate-400 mb-8">Join thousands of students learning better.</p>
         
-        {error && <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600 border border-red-200">{error}</div>}
+        {error && <div className="mb-6 rounded-xl bg-red-500/10 p-4 text-sm text-red-400 border border-red-500/20 text-center font-medium">{error}</div>}
         
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Full Name</label>
-            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-slate-300 px-4 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="John Doe" />
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
+            <input required value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-600" placeholder="John Doe" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-slate-300 px-4 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="you@university.edu" />
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email</label>
+            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-600" placeholder="you@university.edu" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-xl border border-slate-300 px-4 py-2.5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" placeholder="Min 8 characters" />
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Password</label>
+            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3 text-white outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder:text-slate-600" placeholder="Min 8 characters" />
           </div>
-          <button disabled={busy} className="mt-2 w-full rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-md hover:bg-blue-700 disabled:opacity-50 transition-all">
+          <button disabled={busy} className="group mt-4 w-full flex items-center justify-center gap-2 rounded-xl bg-white py-3.5 text-sm font-bold text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:bg-slate-200 disabled:opacity-50 transition-all">
             {busy ? 'Creating account…' : 'Create account'}
+            {!busy && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />}
           </button>
         </form>
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Already have an account? <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">Log in</Link>
+        <p className="mt-8 text-center text-sm text-slate-400">
+          Already have an account? <Link to="/login" className="font-semibold text-white hover:text-cyan-300 transition-colors">Log in</Link>
         </p>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { Notes } from './routes/Notes';
 import { NoteDetail } from './routes/NoteDetail';
 import { Profile } from './routes/Profile';
 import { Upload } from './routes/Upload';
+import { Library } from './routes/Library';
 import { AdminDashboard } from './routes/AdminDashboard';
 import { AdminModeration } from './routes/AdminModeration';
 import { useAuth } from './lib/auth';
@@ -29,6 +30,7 @@ export function App() {
         <Route path="notes" element={<Notes />} />
         <Route path="notes/:id" element={<NoteDetail />} />
         <Route path="profile" element={<Protected><Profile /></Protected>} />
+        <Route path="library" element={<Protected><Library /></Protected>} />
         <Route path="upload" element={<Protected><Upload /></Protected>} />
         <Route path="admin" element={<Protected><AdminDashboard /></Protected>} />
         <Route path="admin/moderation" element={<Protected><AdminModeration /></Protected>} />

@@ -1,16 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', system-ui, sans-serif;
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-slate-950 text-slate-200 antialiased;
 }
 
-/* Custom scrollbar for a premium feel */
+/* Subtle gradient background instead of overwhelming blobs */
+.app-bg {
+  background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 70%);
+  min-height: 100vh;
+}
+
+/* Balanced Glass (more solid, less transparent) */
+.glass {
+  @apply bg-slate-900/80 backdrop-blur-lg border border-slate-800 shadow-xl;
+}
+
+/* Standardized Inputs */
+.input-field {
+  @apply w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all placeholder:text-slate-500;
+}
+
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
